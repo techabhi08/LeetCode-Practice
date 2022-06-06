@@ -11,5 +11,8 @@ class Solution {
             }
         }
         return (max1 - 1) * (max2 - 1);
+        
+        // Arrays.sort(nums);
+        // return (nums[nums.length - 1] - 1) * (nums[nums.length - 2] - 1);
     }
 }
