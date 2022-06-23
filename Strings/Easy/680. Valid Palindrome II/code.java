@@ -6,19 +6,18 @@ class Solution {
             if(s.charAt(i) == s.charAt(j)){
                 i++;
                 j--;
-            }
-            else{
+            }else{
                 if(helper(s, i + 1, j)){
                     return true;
                 }else{
-                    return helper(s, i, j - 1);
+                    return helper(s, i, j-1);
                 }
             }
         }
         return true;
     }
     
-    public boolean helper(String s, int i , int j){
+    public boolean helper(String s, int i, int j){
         while(i < j){
             if(s.charAt(i) == s.charAt(j)){
                 i++;
