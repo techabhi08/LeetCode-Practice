@@ -2,17 +2,17 @@ class Solution {
     public int romanToInt(String s) {
         int sum = 0;
         for(int i = 0; i < s.length(); i++){
-            if((i + 1 < s.length()) && value(s.charAt(i)) < value(s.charAt(i+1))){
-                sum -= value(s.charAt(i));
+            if((i + 1 < s.length()) && findValue(s.charAt(i)) < findValue(s.charAt(i + 1))){
+                sum -= findValue(s.charAt(i));
             }else{
-                sum += value(s.charAt(i));
+                sum += findValue(s.charAt(i));
             }
         }
         return sum;
     }
     
-    public int value(char ch){
-        switch(ch){
+    public int findValue(char c){
+        switch(c){
             case 'I':
                 return 1;
             case 'V':
@@ -28,7 +28,7 @@ class Solution {
             case 'M':
                 return 1000;
             default:
-                return 0;  
+                return 0;
         }
     }
 }
