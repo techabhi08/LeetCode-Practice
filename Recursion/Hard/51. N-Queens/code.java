@@ -1,35 +1,33 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
-        List<List<String>> ans = new ArrayList<>();
+        List<List<String>> result = new ArrayList<>();
         char[][] board = new char[n][n];
-        queens(ans, board, 0);
-        return ans;
+        queens(result, board, 0);
+        return result;
     }
     
-    public void queens(List<List<String>> list, char[][] board, int row){
+    public void queens(List<List<String>> result, char[][] board, int row){
         if(row == board.length){
-            display(list, board);
-            return; 
+            display(result, board);
+            return;
         }
         
         for(int col = 0; col < board.length; col++){
-            if(isSafe(list, board, row, col)){
+            if(isSafe(board, row, col)){
                 board[row][col] = 'Q';
-                queens(list, board, row + 1);
+                queens(result, board, row + 1);
                 board[row][col] = '.';
             }
         }
     }
     
-    public boolean isSafe(List<List<String>> list, char[][] board, int row, int col){
-        //checking for vertical 
+    public boolean isSafe(char[][] board, int row, int col){
         for(int i = 0; i < row; i++){
             if(board[i][col] == 'Q'){
                 return false;
             }
         }
         
-        //checking for diagonal left
         int maxLeft = Math.min(row, col);
         for(int i = 0; i <= maxLeft; i++){
             if(board[row - i][col - i] == 'Q'){
@@ -37,32 +35,30 @@ class Solution {
             }
         }
         
-        //checking for diagonal right
         int maxRight = Math.min(row, board.length - col - 1);
         for(int i = 0; i <= maxRight; i++){
             if(board[row - i][col + i] == 'Q'){
                 return false;
             }
         }
-        
         return true;
     }
     
-    public void display(List<List<String>> res, char[][] board){
+    public void display(List<List<String>> ans, char[][] board){
         List<String> eachRow = new ArrayList<>();
         String s = "";
         
-        for(int i = 0; i < board.length; i++){
+        for(char[] ch : board){
             s = "";
-            for(int j = 0; j < board.length; j++){
-                if(board[i][j] == 'Q'){
+            for(char c : ch){
+                if(c == 'Q'){
                     s += 'Q';
                 }else{
-                    s+= '.';
+                    s += '.';
                 }
             }
             eachRow.add(s);
         }
-        res.add(eachRow);
+        ans.add(eachRow);
     }
 }
