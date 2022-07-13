@@ -19,25 +19,26 @@ class Solution {
         
         ListNode revStart = reverse(slow);
         ListNode start = head;
+        
         while(start != slow){
             if(start.val != revStart.val){
                 return false;
             }
             start = start.next;
-            revStart = revStart.next;  
+            revStart = revStart.next;
         }
         return true;
     }
     
-    public ListNode reverse(ListNode head){
+    public ListNode reverse(ListNode node){
         ListNode prev = null;
-        ListNode present = head;
-        ListNode nex = present.next;
+        ListNode curr = node;
+        ListNode nex = curr.next;
         
-        while(present != null){
-            present.next = prev;
-            prev = present;
-            present = nex;
+        while(curr != null){
+            curr.next = prev;
+            prev = curr;
+            curr = nex;
             if(nex != null){
                 nex = nex.next;
             }
