@@ -23,4 +23,33 @@ class Solution {
         }
         return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
     }
+    
+//     public boolean hasPathSum(TreeNode root, int targetSum) {
+//         int sum = 0;
+//         Stack<TreeNode> stack = new Stack<>();
+//         Stack<Integer> value = new Stack<>();
+//         if(root == null){
+//             return false;
+//         }
+        
+//         stack.push(root);
+//         value.push(root.val);
+//         while(!stack.isEmpty()){
+//             TreeNode temp = stack.pop();
+//             int tempVal = value.pop();
+//             if(temp.left == null && temp.right == null && tempVal == targetSum){
+//                 return true;
+//             }else{
+//                 if(temp.left != null){
+//                     stack.push(temp.left);
+//                     value.push(tempVal + temp.left.val);
+//                 }
+//                 if(temp.right != null){
+//                     stack.push(temp.right);
+//                     value.push(tempVal + temp.right.val);
+//                 }
+//             }
+//         }
+//         return false;
+//     }
 }
