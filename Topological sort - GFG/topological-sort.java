@@ -64,33 +64,35 @@ class Solution
     static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
     {
         // add your code here
-        boolean[] vis = new boolean[V];
-        Stack<Integer> stack = new Stack<>();
+        int[] ans = new int[V];
+        int[] indegree = new int[V];
         
         for(int i = 0; i < V; i++){
-            if(!vis[i]){
-                dfs(i, V, adj, vis, stack);
+            for(int item : adj.get(i)){
+                indegree[item]++;
             }
         }
         
-        int[] ans = new int[stack.size()];
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < V; i++){
+            if(indegree[i] == 0){
+                queue.add(i);
+            }
+        }
+        
         int i = 0;
-        while(!stack.isEmpty()){
-            ans[i++] = stack.pop();
-        }
-        return ans;
-    }
-    
-    public static void dfs(int node, int n, ArrayList<ArrayList<Integer>> adj, boolean[] vis, Stack<Integer> stack){
-        vis[node] = true;
-        
-        for(int item : adj.get(node)){
-            if(!vis[item]){
-                dfs(item, n, adj, vis, stack);
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            ans[i++] = curr;
+            
+            for(int item : adj.get(curr)){
+                indegree[item]--;
+                if(indegree[item] == 0){
+                    queue.add(item);
+                }
             }
         }
         
-        stack.push(node);
-        return;
+        return ans;
     }
 }
