@@ -11,25 +11,22 @@ class Solution {
                 }
             }
         }
+        
         return true;
     }
     
     public boolean dfs(int node, int[] color, int[][] graph, int c){
-        // Queue<Integer> queue = new LinkedList<>();
-        // queue.add(node);
         if(color[node] != -1){
             return color[node] == c;
         }
-        color[node] = c;
         
-        // while(!queue.isEmpty()){
-        //     int curr = queue.poll();
+        color[node] = c;
         for(int item : graph[node]){
-            if(!dfs(item, color, graph, 1-c)){
+            if(!dfs(item, color, graph, 1 - c)){
                 return false;
             }
         }
-        // }
+        
         return true;
     }
 }
