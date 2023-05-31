@@ -40,7 +40,7 @@ class Solution {
         
         for(int i = 0; i < V; i++){
             if(!vis[i]){
-                if(isCycle(i, -1, adj, vis)){
+                if(isCycle(i, adj, vis)){
                     return true;
                 }
             }
@@ -48,16 +48,23 @@ class Solution {
         return false;
     }
     
-    public boolean isCycle(int node, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
+    public boolean isCycle(int node, ArrayList<ArrayList<Integer>> adj, boolean[] vis){
         vis[node] = true;
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{node, -1});
         
-        for(int item : adj.get(node)){
-            if(vis[item] != true){
-                if(isCycle(item, node, adj, vis)){
+        while(!queue.isEmpty()){
+            int[] arr = queue.poll();
+            int curr = arr[0];
+            int parent = arr[1];
+            
+            for(int item : adj.get(curr)){
+                if(vis[item] != true){
+                    vis[item] = true;
+                    queue.add(new int[]{item, curr});
+                }else if(item != parent){
                     return true;
                 }
-            }else if(parent != item){
-                return true;
             }
         }
         return false;
