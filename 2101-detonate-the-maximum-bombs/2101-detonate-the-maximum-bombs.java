@@ -4,22 +4,42 @@ class Solution {
         int ans = 0;
         
         for(int i = 0; i < bombs.length; i++){
-            boolean[] vis = new boolean[n];
-            ans = Math.max(ans, findCount(i, vis, bombs));
+            ans = Math.max(ans, findCount(i, bombs));
         }
         return ans;
     }
     
-    public int findCount(int index, boolean[] vis, int[][] bombs){
-        int count = 1;
-        vis[index] = true;
+    public int findCount(int index, int[][] bombs){
+//         int count = 1;
+//         vis[index] = true;
         
-        for(int i = 0; i < bombs.length; i++){
-            if(!vis[i] && isInRange(bombs[index], bombs[i])){
-                count += findCount(i, vis, bombs);
+//         for(int i = 0; i < bombs.length; i++){
+//             if(!vis[i] && isInRange(bombs[index], bombs[i])){
+//                 count += findCount(i, vis, bombs);
+//             }
+//         }
+        
+//         return count;
+        int n = bombs.length;
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] vis = new boolean[n];
+        
+        vis[index] = true;
+        queue.add(index);
+        
+        int count = 1;
+        
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            
+            for(int i = 0; i < n; i++){
+                if(!vis[i] && isInRange(bombs[curr], bombs[i])){
+                    count++;
+                    queue.add(i);
+                    vis[i] = true;
+                }
             }
         }
-        
         return count;
     }
     
