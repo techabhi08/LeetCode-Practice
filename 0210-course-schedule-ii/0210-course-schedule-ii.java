@@ -18,18 +18,18 @@ class Solution {
         }
         
         Queue<Integer> queue = new LinkedList<>();
-        for(int i = 0; i < indegree.length; i++){
+        for(int i = 0; i < numCourses; i++){
             if(indegree[i] == 0){
                 queue.add(i);
             }
         }
         
         int[] topo = new int[numCourses];
-        int index = 0;
-        
+        int i = 0;
         while(!queue.isEmpty()){
             int curr = queue.poll();
-            topo[index++] = curr;
+            topo[i++] = curr;
+            
             for(int item : adj.get(curr)){
                 indegree[item]--;
                 if(indegree[item] == 0){
@@ -38,7 +38,7 @@ class Solution {
             }
         }
         
-        if(index == numCourses){
+        if(i == numCourses){
             return topo;
         }
         return new int[]{};
