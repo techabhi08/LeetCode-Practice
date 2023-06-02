@@ -15,20 +15,21 @@ class Solution {
     }
     
     public boolean isBipartite(int node, int[] color, int[][] graph){
-        if(color[node] == -1){
-            color[node] = 0;
-        }
-        for(int item : graph[node]){
-            if(color[item] == -1){
-                color[item] = 1 - color[node];
-                if(!isBipartite(item, color, graph)){
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(node);
+        color[node] = 0;
+        
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            for(int item : graph[curr]){
+                if(color[item] == -1){
+                    queue.add(item);
+                    color[item] = 1 - color[curr];
+                }else if(color[item] == color[curr]){
                     return false;
                 }
-            }else if(color[item] == color[node]){
-                return false;
             }
         }
-        
         return true;
     }
 }
