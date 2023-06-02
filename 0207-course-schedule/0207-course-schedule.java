@@ -10,33 +10,33 @@ class Solution {
             adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
         }
         
-        int[] vis = new int[numCourses];
-        int[] dfsVis = new int[numCourses];
-        
+        int[] indegree = new int[numCourses];
         for(int i = 0; i < numCourses; i++){
-            if(vis[i] == 0){
-                if(dfs(i, -1, vis, dfsVis, adj)){
-                    return false;
-                }
+            for(int item : adj.get(i)){
+                indegree[item]++;
             }
         }
-        return true;
-    }
-    
-    public boolean dfs(int node, int parent, int[] vis, int[] dfsVis, List<List<Integer>> adj){
-        vis[node] = 1;
-        dfsVis[node] = 1;
         
-        for(int item : adj.get(node)){
-            if(vis[item] == 0){
-                if(dfs(item, node, vis, dfsVis, adj)){
-                    return true;
-                }
-            }else if(dfsVis[item] == 1){
-                return true;
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < indegree.length; i++){
+            if(indegree[i] == 0){
+                queue.add(i);
             }
         }
-        dfsVis[node] = 0;
-        return false;
+        
+        int i = 0;
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            i++;
+            
+            for(int item : adj.get(curr)){
+                indegree[item]--;
+                if(indegree[item] == 0){
+                    queue.add(item);
+                }
+            }
+        }
+        
+        return i == numCourses;
     }
 }
