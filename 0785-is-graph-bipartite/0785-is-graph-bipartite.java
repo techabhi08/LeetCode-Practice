@@ -6,23 +6,25 @@ class Solution {
         
         for(int i = 0; i < n; i++){
             if(color[i] == -1){
-                if(!dfs(i, color, graph, 0)){
+                if(!isBipartite(i, color, graph)){
                     return false;
                 }
             }
         }
-        
         return true;
     }
     
-    public boolean dfs(int node, int[] color, int[][] graph, int c){
-        if(color[node] != -1){
-            return color[node] == c;
+    public boolean isBipartite(int node, int[] color, int[][] graph){
+        if(color[node] == -1){
+            color[node] = 0;
         }
-        
-        color[node] = c;
         for(int item : graph[node]){
-            if(!dfs(item, color, graph, 1 - c)){
+            if(color[item] == -1){
+                color[item] = 1 - color[node];
+                if(!isBipartite(item, color, graph)){
+                    return false;
+                }
+            }else if(color[item] == color[node]){
                 return false;
             }
         }
