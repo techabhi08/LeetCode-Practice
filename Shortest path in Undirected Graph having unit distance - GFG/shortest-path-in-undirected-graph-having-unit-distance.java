@@ -34,6 +34,7 @@ class Solution {
     public int[] shortestPath(int[][] edges,int n,int m ,int src) {
         // Code here
         List<List<Integer>> adj = new ArrayList<>();
+        
         for(int i = 0; i < n; i++){
             adj.add(new ArrayList<>());
         }
@@ -43,19 +44,19 @@ class Solution {
             adj.get(edges[i][1]).add(edges[i][0]);
         }
         
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{src, 0});
         int[] dist = new int[n];
         Arrays.fill(dist, (int)1e8);
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(src);
         dist[src] = 0;
         
         while(!queue.isEmpty()){
-            int[] curr = queue.poll();
+            int curr = queue.poll();
             
-            for(int item : adj.get(curr[0])){
-                if(curr[1] + 1 < dist[item]){
-                    dist[item] = 1 + curr[1];
-                    queue.add(new int[]{item, dist[item]});
+            for(int item : adj.get(curr)){
+                if(dist[curr] + 1 < dist[item]){
+                    dist[item] = dist[curr] + 1;
+                    queue.add(item);
                 }
             }
         }
@@ -65,7 +66,6 @@ class Solution {
                 dist[i] = -1;
             }
         }
-        
         return dist;
     }
 }
