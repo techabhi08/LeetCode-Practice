@@ -54,14 +54,6 @@ class DriverClass
 
 //User function Template for Java
 
-class Pair {
-    int weight;
-    int node;
-    Pair(int weight, int node){
-        this.weight = weight;
-        this.node = node;
-    }
-}
 
 class Solution
 {
@@ -70,20 +62,22 @@ class Solution
     static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
     {
         // Write your code here
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.weight - b.weight);
-        pq.add(new Pair(0, S));
-        
         int[] dist = new int[V];
         Arrays.fill(dist, (int)1e8);
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        pq.add(new int[]{S, 0});
         dist[S] = 0;
         
         while(!pq.isEmpty()){
-            Pair curr = pq.poll();
+            int[] curr = pq.poll();
+            int node = curr[0];
+            int weight = curr[1];
             
-            for(List<Integer> item : adj.get(curr.node)){
-                if(item.get(1) + curr.weight <= dist[item.get(0)]){
-                    dist[item.get(0)] = item.get(1) + curr.weight;
-                    pq.add(new Pair(dist[item.get(0)], item.get(0)));
+            for(ArrayList<Integer> item : adj.get(node)){
+                if(weight + item.get(1) < dist[item.get(0)]){
+                    dist[item.get(0)] = weight + item.get(1);
+                    pq.add(new int[]{item.get(0), dist[item.get(0)]});
                 }
             }
         }
