@@ -6,19 +6,17 @@ class Solution {
             return -1;
         }
         
-        boolean[][] vis = new boolean[n][n];
-        
+        int[][] vis = new int[n][n];
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{0, 0});
-        vis[0][0] = true;
+        vis[0][0] = 1;
         
         int ans = 0;
-        
         while(!queue.isEmpty()){
             int size = queue.size();
             ans++;
             
-            for(int k = 0; k < size; k++){
+            for(int i = 0; i < size; i++){
                 int[] curr = queue.poll();
                 int row = curr[0];
                 int col = curr[1];
@@ -27,14 +25,14 @@ class Solution {
                     return ans;
                 }
                 
-                for(int i = -1; i <= 1; i++){
-                    for(int j = -1; j <= 1; j++){
-                        int nRow = row + i;
-                        int nCol = col + j;
+                for(int j = -1; j <= 1; j++){
+                    for(int k = -1; k <= 1; k++){
+                        int nRow = row + j;
+                        int nCol = col + k;
                         
-                        if(nRow >= 0 && nRow < n && nCol >= 0 && nCol < n && !vis[nRow][nCol] && grid[nRow][nCol] == 0){
-                            vis[nRow][nCol] = true;
+                        if(nRow >= 0 && nRow < n && nCol >= 0 && nCol < n && vis[nRow][nCol] == 0 && grid[nRow][nCol] == 0){
                             queue.add(new int[]{nRow, nCol});
+                            vis[nRow][nCol] = 1;
                         }
                     }
                 }
