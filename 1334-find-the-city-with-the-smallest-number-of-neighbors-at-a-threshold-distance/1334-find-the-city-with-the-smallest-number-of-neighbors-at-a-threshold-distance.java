@@ -1,19 +1,45 @@
+class Pair{
+    int node;
+    int dist;
+    Pair(int node, int dist){
+        this.node = node;
+        this.dist = dist;
+    }
+}
 class Solution {
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+        List<List<Pair>> adj = new ArrayList<>();
+        for(int i = 0; i < n; i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        for(int i = 0; i < edges.length; i++){
+            adj.get(edges[i][0]).add(new Pair(edges[i][1], edges[i][2]));
+            adj.get(edges[i][1]).add(new Pair(edges[i][0], edges[i][2]));
+        }
+        
         int[][] dist = new int[n][n];
         for(int[] row : dist){
-            Arrays.fill(row, (int)1e8);
+            Arrays.fill(row, (int)1e9);
         }
         
-        for(int[] edge : edges){
-            dist[edge[0]][edge[1]] = edge[2];
-            dist[edge[1]][edge[0]] = edge[2];
-        }
         
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                for(int k = 0; k < n; k++){
-                    dist[j][k] = Math.min(dist[j][k], dist[j][i] + dist[i][k]);
+        for(int src = 0; src < n; src++){
+            PriorityQueue<Pair> pq = new PriorityQueue<>((x, y) -> x.dist - y.dist);
+            pq.add(new Pair(src, 0));
+            
+            while(!pq.isEmpty()){
+                Pair curr = pq.poll();
+                int val = curr.node;
+                int weight = curr.dist;
+                
+                for(Pair item : adj.get(val)){
+                    int adjNode = item.node;
+                    int adjDist = item.dist;
+                    if(adjDist + weight < dist[src][adjNode]){
+                        dist[src][adjNode] = adjDist + weight;
+                        pq.add(new Pair(adjNode, dist[src][adjNode]));
+                    }
                 }
             }
         }
