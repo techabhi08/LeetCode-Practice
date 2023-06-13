@@ -38,29 +38,18 @@ class Solution
     {
         // Your code here
         int[] dp = new int[n];
-        Arrays.fill(dp, -1);
+        dp[0] = arr[0];
         
-        return findMax(n - 1, arr, dp);
-    }
-    
-    public int findMax(int index, int[] arr, int[] dp){
-        if(index == 0){
-            return arr[index];
-        }
-        if(index < 0){
-            return 0;
-        }
-        
-        if(dp[index] != -1){
-            return dp[index];
+        for(int index = 1; index < n; index++){
+            int pick = arr[index];
+            if(index - 2 >= 0){
+                pick += dp[index - 2];
+            }
+            int notPick = 0 + dp[index - 1];
+            
+            dp[index] = Math.max(pick, notPick);
         }
         
-        int pick = arr[index];
-        if(index - 2 >= 0){
-            pick += findMax(index - 2, arr, dp);
-        }
-        int notPick = 0 + findMax(index - 1, arr, dp);
-        
-        return dp[index] = Math.max(pick, notPick);
+        return dp[n - 1];
     }
 }
