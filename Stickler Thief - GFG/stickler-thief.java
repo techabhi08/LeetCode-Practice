@@ -37,19 +37,23 @@ class Solution
     public int FindMaxSum(int arr[], int n)
     {
         // Your code here
-        int[] dp = new int[n];
-        dp[0] = arr[0];
+        // int[] dp = new int[n];
+        // dp[0] = arr[0];
+        int prev2 = 0;
+        int prev = arr[0];
         
         for(int index = 1; index < n; index++){
             int pick = arr[index];
             if(index - 2 >= 0){
-                pick += dp[index - 2];
+                pick += prev2;
             }
-            int notPick = 0 + dp[index - 1];
+            int notPick = 0 + prev;
             
-            dp[index] = Math.max(pick, notPick);
+            int curr = Math.max(pick, notPick);
+            prev2 = prev;
+            prev = curr;
         }
         
-        return dp[n - 1];
+        return prev;
     }
 }
