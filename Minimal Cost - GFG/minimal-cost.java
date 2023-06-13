@@ -30,28 +30,21 @@ class GFG{
 
 class Solution{
     public int minimizeCost(int arr[],int N,int K){
-        //code here
+        //Memoization
         int[] dp = new int[N];
-        Arrays.fill(dp, - 1);
-        return findMin(N - 1, arr, K, dp);
-    }
-    
-    public int findMin(int index, int[] arr, int k, int[] dp){
-        if(index == 0){
-            return 0;
-        }
+        Arrays.fill(dp, -1);
+        dp[0] = 0;
         
-        if(dp[index] != -1){
-            return dp[index];
-        }
-        
-        int step = Integer.MAX_VALUE;
-        for(int i = 1; i <= k; i++){
-            if(index - i >= 0){
-                step = Math.min(step, findMin(index - i, arr, k, dp) + Math.abs(arr[index] - arr[index - i]));
+        for(int index = 1; index < N; index++){
+            int step = Integer.MAX_VALUE;
+            for(int i = 1; i <= K; i++){
+                if(index - i >= 0){
+                    step = Math.min(step, dp[index - i] + Math.abs(arr[index] - arr[index - i]));
+                }
             }
+            dp[index] = step;
         }
         
-        return dp[index] = step;
+        return dp[N - 1];
     }
 }
