@@ -36,31 +36,23 @@ class Solution{
         for(int[] row : dp){
             Arrays.fill(row, -1);
         }
-        return findMax(N - 1, 3, points, dp);
-    }
-    
-    public int findMax(int index, int last, int[][] points, int[][] dp){
-        if(index == 0){
-            int max = 0;
-            for(int i = 0; i <= 2; i++){
-                if(i != last){
-                    max = Math.max(max, points[index][i]);
+        dp[0][0] = Math.max(points[0][1], points[0][2]);
+        dp[0][1] = Math.max(points[0][0], points[0][2]);
+        dp[0][2] = Math.max(points[0][0], points[0][1]);
+        dp[0][3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
+        
+        for(int index = 1; index < N; index++){
+            for(int last = 0; last <= 3; last++){
+                dp[index][last] = 0;
+                for(int i = 0; i <= 2; i++){
+                    if(i != last){
+                        int point = points[index][i] + dp[index - 1][i];
+                        dp[index][last] = Math.max(dp[index][last], point);
+                    }
                 }
             }
-            return max;
         }
         
-        if(dp[index][last] != -1){
-            return dp[index][last];
-        }
-        
-        int maxi = 0;
-        for(int i = 0; i <= 2; i++){
-            if(i != last){
-                int point = points[index][i] + findMax(index - 1, i, points, dp);
-                maxi = Math.max(maxi, point);
-            }
-        }
-        return dp[index][last] = maxi;
+        return dp[N - 1][3];
     }
 }
