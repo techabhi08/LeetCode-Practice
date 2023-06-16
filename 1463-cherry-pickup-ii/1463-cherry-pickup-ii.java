@@ -2,13 +2,14 @@ class Solution {
     public int cherryPickup(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
-        int[][][] dp = new int[n][m][m];
+        int[][] next = new int[m][m];
+        int[][] curr = new int[m][m];
         for(int i = 0; i < m; i++){
             for(int j = 0; j < m; j++){
                 if(i == j){
-                    dp[n - 1][i][j] = grid[n - 1][i];
+                    next[i][j] = grid[n - 1][i];
                 }else{
-                    dp[n - 1][i][j] = grid[n - 1][i] + grid[n - 1][j];
+                    next[i][j] = grid[n - 1][i] + grid[n - 1][j];
                 }
             }
         }
@@ -28,18 +29,22 @@ class Solution {
                             }
                             
                             if(j1 + a >= 0 && j1 + a < m && j2 + b >= 0 && j2 + b < m){
-                                value += dp[i + 1][j1 + a][j2 + b];
+                                value += next[j1 + a][j2 + b];
                             }else{
                                 value += (int)-1e8;
                             }
                             maxi = Math.max(maxi, value);
                         }
                     }
-                    dp[i][j1][j2] = maxi;
+                    curr[j1][j2] = maxi;
                 }
+            }
+            
+            for(int k = 0; k < m; k++){
+                next[k] = (int[])curr[k].clone();
             }
         }
         
-        return dp[0][0][m - 1];
+        return next[0][m - 1];
     }
 }
