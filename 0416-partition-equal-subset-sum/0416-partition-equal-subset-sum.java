@@ -9,23 +9,25 @@ class Solution {
         if(sum % 2 != 0){
             return false;
         }
-        boolean[][] dp = new boolean[n][sum + 1];
-        for(int i = 0; i < n; i++){
-            dp[i][sum] = true;
+        boolean[] prev = new boolean[sum / 2 + 1];
+        prev[0] = true;
+        if(nums[0] <= sum / 2){
+            prev[nums[0]] = true;
         }
         
-        dp[0][nums[0]] = true;
         for(int index = 1; index < n; index++){
-            for(int target = 1; target <= sum; target++){
-                boolean notTake = dp[index - 1][target];
+            boolean[] curr = new boolean[sum / 2 + 1];
+            for(int target = 1; target <= sum / 2; target++){
+                boolean notTake = prev[target];
                 boolean take = false;
                 if(nums[index] <= target){
-                    take = dp[index - 1][target - nums[index]];
+                    take = prev[target - nums[index]];
                 }
 
-                dp[index][target] = (take || notTake);
+                curr[target] = (take || notTake);
             }
+            prev = curr;
         }
-        return dp[n - 1][sum / 2];
+        return prev[sum / 2];
     }
 }
