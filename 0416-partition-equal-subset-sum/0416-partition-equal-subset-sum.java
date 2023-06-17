@@ -9,33 +9,23 @@ class Solution {
         if(sum % 2 != 0){
             return false;
         }
-        int[][] dp = new int[n][sum + 1];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
+        boolean[][] dp = new boolean[n][sum + 1];
+        for(int i = 0; i < n; i++){
+            dp[i][sum] = true;
         }
         
-        return findSum(n - 1, nums, sum / 2, dp);
-    }
-    
-    public boolean findSum(int index, int[] nums, int target, int[][] dp){
-        if(target == 0){
-            return true;
+        dp[0][nums[0]] = true;
+        for(int index = 1; index < n; index++){
+            for(int target = 1; target <= sum; target++){
+                boolean notTake = dp[index - 1][target];
+                boolean take = false;
+                if(nums[index] <= target){
+                    take = dp[index - 1][target - nums[index]];
+                }
+
+                dp[index][target] = (take || notTake);
+            }
         }
-        if(index == 0){
-            return nums[0] == target;
-        }
-        
-        if(dp[index][target] != -1){
-            return dp[index][target] == 1 ? true : false;
-        }
-        
-        boolean notTake = findSum(index - 1, nums, target, dp);
-        boolean take = false;
-        if(nums[index] <= target){
-            take = findSum(index - 1, nums, target - nums[index], dp);
-        }
-        
-        dp[index][target] = (take || notTake) ? 1 : 0;
-        return take || notTake;
+        return dp[n - 1][sum / 2];
     }
 }
