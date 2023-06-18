@@ -12,29 +12,27 @@ class Solution {
         }
         
         int[][] dp = new int[n][s2 + 1];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
-        }
-        return findTarget(n - 1, nums, s2, dp);
-    }
-    
-    public int findTarget(int index, int[] nums, int sum, int[][] dp){
-        if(index == 0){
-            if(sum == 0 && nums[0] == 0) return 2;
-            if(sum == 0 || nums[index] == sum) return 1;
-            return 0;
+        if(nums[0] == 0){
+            dp[0][0] = 2;
+        }else{
+            dp[0][0] = 1;
         }
         
-        if(dp[index][sum] != -1){
-            return dp[index][sum];
+        if(nums[0] != 0 && nums[0] <= s2){
+            dp[0][nums[0]] = 1;
         }
         
-        int notTake = findTarget(index - 1, nums, sum, dp);
-        int take = 0;
-        if(nums[index] <= sum){
-            take = findTarget(index - 1, nums, sum - nums[index], dp);
+        for(int index = 1; index < n; index++){
+            for(int sum = 0; sum <= s2; sum++){
+                int notTake = dp[index - 1][sum];
+                int take = 0;
+                if(nums[index] <= sum){
+                    take = dp[index - 1][sum - nums[index]];
+                }
+
+                dp[index][sum] = take + notTake;
+            }
         }
-        
-        return dp[index][sum] = take + notTake;
+        return dp[n - 1][s2];
     }
 }
