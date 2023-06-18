@@ -53,33 +53,23 @@ class Solution
     { 
          // your code here 
          int[][] dp = new int[n][W + 1];
-         
-         for(int[] row : dp){
-             Arrays.fill(row, -1);
+         for(int i = wt[0]; i <= W; i++){
+            dp[0][i] = val[0];
          }
-         return findMax(n - 1, W, wt, val, dp);
+         
+         for(int index = 1; index < n; index++){
+             for(int weight = 0; weight <= W; weight++){
+                int notPick = dp[index - 1][weight];
+                int pick = Integer.MIN_VALUE;
+                if(wt[index] <= weight){
+                    pick = val[index] + dp[index - 1][weight - wt[index]];
+                }
+                
+                dp[index][weight] = Math.max(pick, notPick);
+             }
+         }
+         return dp[n - 1][W];
     } 
-    
-    public static int findMax(int index, int weight, int[] wt, int[] val, int[][] dp){
-        if(weight == 0){
-            return 0;
-        }
-        if(index == 0){
-            return wt[0] <= weight ? val[0] : 0;
-        }
-        
-        if(dp[index][weight] != -1){
-            return dp[index][weight];
-        }
-        
-        int notPick = findMax(index - 1, weight, wt, val, dp);
-        int pick = 0;
-        if(wt[index] <= weight){
-            pick = val[index] + findMax(index - 1, weight - wt[index], wt, val, dp);
-        }
-        
-        return dp[index][weight] = Math.max(pick, notPick);
-    }
 }
 
 
