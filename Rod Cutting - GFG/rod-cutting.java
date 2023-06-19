@@ -29,27 +29,20 @@ class Solution{
     public int cutRod(int price[], int n) {
         //code here
         int[][] dp = new int[n][n + 1];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
+        for(int i = 1; i <= n; i++){
+            dp[0][i] = i >= 1 ? (i) * price[0] : 0;
         }
-        return findMax(n - 1, n, price, dp);
-    }
-    
-    public int findMax(int index, int pieces, int[] price, int[][] dp){
-        if(index == 0){
-            return pieces >= index + 1 ? (pieces / (index + 1)) * price[index] : 0;
+        for(int index = 1; index < n; index++){
+            for(int pieces = 0; pieces <= n; pieces++){
+                int notTake = dp[index - 1][pieces];
+                int take = Integer.MIN_VALUE;
+                if(index + 1 <= pieces){
+                    take = price[index] + dp[index][pieces - index - 1];
+                }
+                
+                dp[index][pieces] = Math.max(take, notTake);
+            }
         }
-        
-        if(dp[index][pieces] != -1){
-            return dp[index][pieces];
-        }
-        
-        int notTake = findMax(index - 1, pieces, price, dp);
-        int take = Integer.MIN_VALUE;
-        if(index + 1 <= pieces){
-            take = price[index] + findMax(index, pieces - index - 1, price, dp);
-        }
-        
-        return dp[index][pieces] = Math.max(take, notTake);
+        return dp[n - 1][n];
     }
 }
