@@ -37,31 +37,22 @@ class Solution{
     {
         // code here
         int[][] dp = new int[N][W + 1];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
-        }
-        return findMax(N - 1, W, val, wt, dp);
-    }
-    
-    public static int findMax(int index, int weight, int[] val, int[] wt, int[][] dp){
-        if(weight == 0){
-            return 0;
+        for(int i = 0; i <= W; i++){
+            dp[0][i] = i <= W ? (i / wt[0]) * val[0] : 0;
         }
         
-        if(index == 0){
-            return wt[0] <= weight ? (weight / wt[0]) * val[index] : 0;
+        for(int index = 1; index < N; index++){
+            for(int weight = 0; weight <= W; weight++){
+                int notTake = dp[index - 1][weight];
+                int take = Integer.MIN_VALUE;
+                if(wt[index] <= weight){
+                    take = val[index] + dp[index][weight - wt[index]];
+                }
+                
+                dp[index][weight] = Math.max(take, notTake);
+            }
         }
         
-        if(dp[index][weight] != -1){
-            return dp[index][weight];
-        }
-        
-        int notTake = findMax(index - 1, weight, val, wt, dp);
-        int take = Integer.MIN_VALUE;
-        if(wt[index] <= weight){
-            take = val[index] + findMax(index, weight - wt[index], val, wt, dp);
-        }
-        
-        return dp[index][weight] = Math.max(take, notTake);
+        return dp[N - 1][W];
     }
 }
