@@ -4,24 +4,17 @@ class Solution {
         StringBuilder sb = new StringBuilder(s);
         String s2 = sb.reverse().toString();
         
-        int[][] dp = new int[n][n];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
-        }
-        return n - findLCS(n - 1, n - 1, s, s2, dp);
-    }
-    
-    public int findLCS(int i, int j, String s, String s2, int[][] dp){
-        if(i < 0 || j < 0){
-            return 0;
-        }
+        int[][] dp = new int[n + 1][n + 1];
         
-        if(dp[i][j] != -1){
-            return dp[i][j];
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= n; j++){
+                if(s.charAt(i - 1) == s2.charAt(j - 1)){
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                }else{
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
         }
-        if(s.charAt(i) == s2.charAt(j)){
-            return dp[i][j] = 1 + findLCS(i - 1, j - 1, s, s2, dp);
-        }
-        return dp[i][j] = Math.max(findLCS(i - 1, j, s, s2, dp), findLCS(i, j - 1, s, s2, dp));
+        return n - dp[n][n];
     }
 }
