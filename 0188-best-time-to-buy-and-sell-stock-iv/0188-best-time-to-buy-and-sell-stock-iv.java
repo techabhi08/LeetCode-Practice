@@ -1,29 +1,21 @@
 class Solution {
     public int maxProfit(int k, int[] prices) {
         int n = prices.length;
-        int[][][] dp = new int[n][2][k + 1];
-        for(int[][] rows : dp){
-            for(int[] row : rows){
-                Arrays.fill(row, -1);
+        int[][][] dp = new int[n + 1][2][k + 1];
+        
+        for(int index = n - 1; index >= 0; index--){
+            for(int canBuy = 0; canBuy <= 1; canBuy++){
+                for(int j = 1; j <= k; j++){
+                    if(canBuy == 1){
+                        dp[index][canBuy][j] = Math.max(-prices[index] + dp[index + 1][0][j],
+                                       dp[index + 1][1][j]);
+                    }else{
+                        dp[index][canBuy][j] = Math.max(prices[index] + dp[index+1][1][j - 1], 
+                                    dp[index + 1][0][j]);
+                    }
+                }
             }
         }
-        return findMax(0, 1, k, prices, dp);
-    }
-    
-    public int findMax(int index, int canBuy, int k, int[] prices, int[][][] dp){
-        if(index == prices.length || k == 0){
-            return 0;
-        }
-        
-        if(dp[index][canBuy][k] != -1){
-            return dp[index][canBuy][k];
-        }
-        
-        if(canBuy == 1){
-            return dp[index][canBuy][k] = Math.max(-prices[index] + findMax(index + 1, 0, k, prices, dp),
-                           findMax(index + 1, 1, k, prices, dp));
-        }
-        return dp[index][canBuy][k] = Math.max(prices[index] + findMax(index + 1, 1, k - 1, prices, dp),
-                       findMax(index + 1, 0, k, prices, dp));
+        return dp[0][1][k];
     }
 }
