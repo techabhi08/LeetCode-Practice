@@ -10,27 +10,21 @@ class Solution {
         for(int num : cuts){
             arr[i++] = num;
         }
-        int[][] dp = new int[m + 1][m + 1];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
-        }
-        return findMin(1, m, arr, dp);
-    }
-    
-    public int findMin(int i, int j, int[] arr, int[][] dp){
-        if(i > j){ 
-            return 0;
-        }
+        int[][] dp = new int[m + 2][m + 2];
         
-        if(dp[i][j] != -1){
-            return dp[i][j];
+        for(i = m; i >= 1; i--){
+            for(int j = 1; j <= m; j++){
+                if(i > j){
+                    continue;
+                }
+                int min = Integer.MAX_VALUE;
+                for(int k = i; k <= j; k++){
+                    int cost = arr[j + 1] - arr[i - 1] + dp[i][k - 1] + dp[k + 1][j];
+                    min = Math.min(min, cost);
+                }
+                dp[i][j] = min;
+            }
         }
-        
-        int min = Integer.MAX_VALUE;
-        for(int k = i; k <= j; k++){
-            int cost = arr[j + 1] - arr[i - 1] + findMin(i, k - 1, arr, dp) + findMin(k + 1, j, arr, dp);
-            min = Math.min(min, cost);
-        }
-        return dp[i][j] = min;
+        return dp[1][m];
     }
 }
