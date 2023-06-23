@@ -9,28 +9,22 @@ class Solution {
         for(int num : nums){
             arr[i++] = num;
         }
-        int[][] dp = new int[n + 1][n + 1];
-        for(int[] row : dp){
-            Arrays.fill(row, -1);
+        int[][] dp = new int[n + 2][n + 2];
+        
+        for(i = n; i >= 1; i--){
+            for(int j = 0; j <= n; j++){
+                if(i > j){
+                    continue;
+                }
+                int max = Integer.MIN_VALUE;
+                for(int k = i; k <= j; k++){
+                    int coins = arr[i - 1] * arr[k] * arr[j + 1] + dp[i][k - 1] + dp[k+1][j];
+                    max = Math.max(max, coins);
+                }
+                dp[i][j] = max;
+            }
         }
         
-        return findMax(1, n, arr, dp);
-    }
-    
-    public int findMax(int i, int j, int[] arr, int[][] dp){
-        if(i > j){
-            return 0;
-        }
-        
-        if(dp[i][j] != -1){
-            return dp[i][j];
-        }
-        
-        int max = Integer.MIN_VALUE;
-        for(int k = i; k <= j; k++){
-            int coins = arr[i - 1] * arr[k] * arr[j + 1] + findMax(i, k - 1, arr, dp) + findMax(k + 1, j, arr, dp);
-            max = Math.max(max, coins);
-        }
-        return dp[i][j] = max;
+        return dp[1][n];
     }
 }
