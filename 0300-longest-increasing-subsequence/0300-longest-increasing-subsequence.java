@@ -1,31 +1,28 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        List<Integer> temp = new ArrayList<>();
-        temp.add(nums[0]);
-        
-        for(int i = 1; i < nums.length; i++){
-            if(nums[i] > temp.get(temp.size() - 1)){
-                temp.add(nums[i]);
-            }else{
-                int index = find(0, temp.size() - 1, nums[i], temp);
-                temp.set(index, nums[i]);
-            }
+        int n = nums.length;
+        int[][] dp = new int[n][n];
+        for(int[] row : dp){
+            Arrays.fill(row, -1);
         }
-        return temp.size();
+        return findMax(0, -1, nums, dp);
     }
     
-    public int find(int start, int end, int target, List<Integer> temp){
-        while(start < end){
-            int mid = start + (end - start) / 2;
-            if(temp.get(mid) == target){
-                return mid;
-            }
-            else if(temp.get(mid) > target){
-                end = mid;
-            }else{
-                start = mid + 1;
-            }
+    public int findMax(int index, int prev, int[] nums, int[][] dp){
+        if(index == nums.length){
+            return 0;
         }
-        return end;
+        
+        if(dp[index][prev + 1] != -1){
+            return dp[index][prev + 1];
+        }
+        
+        int take = 0;
+        if(prev == -1 || nums[prev] < nums[index]){
+            take = 1 + findMax(index + 1, index, nums, dp);
+        }
+        int notTake = findMax(index + 1, prev, nums, dp);
+        
+        return dp[index][prev + 1] = Math.max(take, notTake);
     }
 }
