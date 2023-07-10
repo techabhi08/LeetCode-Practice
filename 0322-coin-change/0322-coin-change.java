@@ -1,29 +1,34 @@
 class Solution {
-    public int coinChange(int[] coins, int amt) {
+    public int coinChange(int[] coins, int amount) {
         int n = coins.length;
         Arrays.sort(coins);
-        int[] prev = new int[amt + 1];
-        int[] curr = new int[amt + 1];
-        
-        for(int i = 0; i <= amt; i++){
-            prev[i] = i % coins[0] == 0 ? i / coins[0] : (int)1e8;
+        int[][] dp = new int[n][amount + 1];
+        for(int[] row : dp){
+            Arrays.fill(row, -1);
         }
         
-        for(int index = 1; index < n; index++){
-            for(int amount = 0; amount <= amt; amount++){
-                int notTake = prev[amount];
-                int take = (int)1e8;
-                if(coins[index] <= amount){
-                    take = 1 + curr[amount - coins[index]];
-                }
-
-                curr[amount] = Math.min(take, notTake);
-            }
-            prev = curr;
-        }
-        
-        int ans = prev[amt];
+        int ans = findCoins(n - 1, amount, coins, dp);
         return ans == (int)1e8 ? -1 : ans;
     }
     
+    public int findCoins(int index, int amount, int[] coins, int[][] dp){
+        if(index == 0){
+            if(amount % coins[index] == 0){
+                return (int)amount / coins[index];
+            }
+            return (int)1e8;
+        }
+        
+        if(dp[index][amount] != -1){
+            return dp[index][amount];
+        }
+        
+        int notTake = findCoins(index - 1, amount, coins, dp);
+        int take = (int)1e8;
+        if(coins[index] <= amount){
+            take = 1 + findCoins(index, amount - coins[index], coins, dp);
+        }
+        
+        return dp[index][amount] = Math.min(take, notTake);
+    }
 }
