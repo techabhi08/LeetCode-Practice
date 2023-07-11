@@ -8,12 +8,12 @@ class Node{
         return links[ch - 'a'] != null;
     }
     
-    public Node get(char ch){
-        return links[ch - 'a'];
-    }
-    
     public void put(char ch, Node node){
         links[ch - 'a'] = node;
+    }
+    
+    public Node get(char ch){
+        return links[ch - 'a'];
     }
     
     public boolean isEnd(){
@@ -32,19 +32,19 @@ class Solution {
         
         for(String word : wordDict){
             Node curr = root;
-            for(char ch : word.toCharArray()){
-                if(!curr.contains(ch)){
-                    curr.put(ch, new Node());
+            for(char c : word.toCharArray()){
+                if(!curr.contains(c)){
+                    curr.put(c, new Node());
                 }
-                curr = curr.get(ch);
+                curr = curr.get(c);
             }
             curr.setEnd();
         }
         
-        return isValidBreak(0, s, root);
+        return findBreak(0, s, root);
     }
     
-    public boolean isValidBreak(int index, String s, Node root){
+    public boolean findBreak(int index, String s, Node root){
         if(index == s.length()){
             return true;
         }
@@ -63,7 +63,7 @@ class Solution {
                 return false;
             }
             
-            if(curr.isEnd() && isValidBreak(i + 1, s, root)){
+            if(curr.isEnd() && findBreak(i + 1, s, root)){
                 return true;
             }
         }
