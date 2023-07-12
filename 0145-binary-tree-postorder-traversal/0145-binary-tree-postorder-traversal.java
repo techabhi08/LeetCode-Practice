@@ -20,26 +20,31 @@ class Solution {
             return ans;
         }
         
-        Stack<TreeNode> stack1 = new Stack<>();
-        Stack<TreeNode> stack2 = new Stack<>();
-        stack1.push(root);
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
         
-        while(!stack1.isEmpty()){
-            TreeNode curr = stack1.pop();
-            stack2.push(curr);
-            
-            if(curr.left != null){
-                stack1.push(curr.left);
-            }
-            if(curr.right != null){
-                stack1.push(curr.right);
+        while(curr != null || !stack.isEmpty()){
+            if(curr != null){
+                stack.push(curr);
+                curr = curr.left;
+            }else{
+                TreeNode temp = stack.peek().right;
+                if(temp == null){
+                    temp = stack.peek();
+                    stack.pop();
+                    ans.add(temp.val);
+                    
+                    while(!stack.isEmpty() && temp == stack.peek().right){
+                        temp = stack.peek();
+                        stack.pop();
+                        ans.add(temp.val);
+                    }
+                }else{
+                    curr = temp;
+                }
             }
         }
         
-        while(!stack2.isEmpty()){
-            TreeNode curr = stack2.pop();
-            ans.add(curr.val);
-        }
         return ans;
     }
 }
