@@ -1,7 +1,5 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        List<Integer> list = new ArrayList<>();
-        
         List<List<Integer>> adj = new ArrayList<>();
         for(int i = 0; i < graph.length; i++){
             adj.add(new ArrayList<>());
@@ -22,9 +20,10 @@ class Solution {
             }
         }
         
+        List<Integer> ans = new ArrayList<>();
         while(!queue.isEmpty()){
             int curr = queue.poll();
-            list.add(curr);
+            ans.add(curr);
             for(int item : adj.get(curr)){
                 indegree[item]--;
                 if(indegree[item] == 0){
@@ -33,7 +32,8 @@ class Solution {
             }
         }
         
-        Collections.sort(list);
-        return list;
+        ans.sort(null);
+        return ans;
+        
     }
 }
