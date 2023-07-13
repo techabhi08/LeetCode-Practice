@@ -18,7 +18,7 @@ class Solution {
         }
         
         Queue<Integer> queue = new LinkedList<>();
-        for(int i = 0; i < indegree.length; i++){
+        for(int i = 0; i < numCourses; i++){
             if(indegree[i] == 0){
                 queue.add(i);
             }
@@ -28,7 +28,6 @@ class Solution {
         while(!queue.isEmpty()){
             int curr = queue.poll();
             i++;
-            
             for(int item : adj.get(curr)){
                 indegree[item]--;
                 if(indegree[item] == 0){
