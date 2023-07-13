@@ -27,20 +27,23 @@ class Solution {
             dist++;
             for(int i = 0; i < size; i++){
                 TreeNode curr = queue.poll();
-                if(curr.left != null && !vis.containsKey(curr.left)){
+                if(!vis.containsKey(curr.left) && curr.left != null){
                     queue.add(curr.left);
                     vis.put(curr.left, true);
                 }
-                if(curr.right != null && !vis.containsKey(curr.right)){
+                
+                if(!vis.containsKey(curr.right) && curr.right != null){
                     queue.add(curr.right);
                     vis.put(curr.right, true);
                 }
-                if(parent.get(curr) != null && !vis.containsKey(parent.get(curr))){
-                    queue.add(parent.get(curr));
+                
+                if(!vis.containsKey(parent.get(curr)) && parent.get(curr) != null){
                     vis.put(parent.get(curr), true);
+                    queue.add(parent.get(curr));
                 }
             }
         }
+        
         while(!queue.isEmpty()){
             TreeNode curr = queue.poll();
             ans.add(curr.val);
