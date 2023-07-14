@@ -20,30 +20,19 @@ class Solution {
             return 0;
         }
         
-        int left = findHeight(root, true);
-        int right = findHeight(root, false);
-        
-        if(left == right){
-            return (2 << right) - 1;
-        }
-        
-        return 1 + countNodes(root.left) + countNodes(root.right);
-    }
-    public int findHeight(TreeNode root, boolean left){
-        if(root == null){
-            return 0;
-        }
-        
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
         int count = 0;
-        if(left){
-            while(root.left != null){
-                count++;
-                root = root.left;
+        
+        while(!queue.isEmpty()){
+            TreeNode curr = queue.poll();
+            count++;
+            
+            if(curr.left != null){
+                queue.add(curr.left);
             }
-        }else{
-            while(root.right != null){
-                count++;
-                root = root.right;
+            if(curr.right != null){
+                queue.add(curr.right);
             }
         }
         return count;
