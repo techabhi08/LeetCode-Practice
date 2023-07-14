@@ -14,45 +14,18 @@
  * }
  */
 class Solution {
+    Set<Integer> set = new HashSet<>();
     public boolean findTarget(TreeNode root, int k) {
         if(root == null){
             return false;
         }
-        List<Integer> inorder = new ArrayList<>();
         
-        TreeNode curr = root;
-        while(curr != null){
-            if(curr.left == null){
-                inorder.add(curr.val);
-                curr = curr.right;
-            }else{
-                TreeNode prev = curr.left;
-                while(prev.right != null && prev.right != curr){
-                    prev = prev.right;
-                }
-                if(prev.right == null){
-                    prev.right = curr;
-                    curr = curr.left;
-                }else{
-                    prev.right = null;
-                    inorder.add(curr.val);
-                    curr = curr.right;
-                }
-            }
+        if(set.contains(k - root.val)){
+            return true;
         }
         
-        int i = 0, j = inorder.size() - 1;
+        set.add(root.val);
         
-        while(i < j){
-            int sum = inorder.get(i) + inorder.get(j);
-            if(sum == k){
-                return true;
-            }else if(sum < k){
-                i++;
-            }else{
-                j--;
-            }
-        }
-        return false;
+        return findTarget(root.left, k) || findTarget(root.right, k);
     }
 }
