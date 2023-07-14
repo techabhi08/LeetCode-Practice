@@ -14,34 +14,22 @@
  * }
  */
 class Solution {
+    int index;
     public TreeNode bstFromPreorder(int[] preorder) {
-        TreeNode root = new TreeNode(preorder[0]);
-        
-        for(int i = 1; i < preorder.length; i++){
-            buildTree(preorder[i], root);
-        }
-        return root;
+        index = 0;
+        return constructTree(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
     
-    public void buildTree(int val, TreeNode root){
-        TreeNode curr = root;
-        
-        while(curr != null){
-            if(curr.val > val){
-                if(curr.left != null){
-                    curr = curr.left;
-                }else{
-                    curr.left = new TreeNode(val);
-                    return;
-                }
-            }else{
-                if(curr.right != null){
-                    curr = curr.right;
-                }else{
-                    curr.right = new TreeNode(val);
-                    return;
-                }
-            }
+    public TreeNode constructTree(int[] preorder, int min, int max){
+        if(index == preorder.length || preorder[index] <= min || preorder[index] >= max){
+            return null;
         }
+        
+        int val = preorder[index];
+        index++;
+        TreeNode root = new TreeNode(val);
+        root.left = constructTree(preorder, min, val);
+        root.right = constructTree(preorder, val, max);
+        return root;
     }
 }
