@@ -18,22 +18,35 @@ class Solution {
         if(root == null){
             return true;
         }
+        List<Integer> inorder = new ArrayList<>();
         
-        return findIsBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
-    }
-    
-    public boolean findIsBST(TreeNode root, long min, long max){
-        if(root == null){
-            return true;
+        TreeNode curr = root;
+        while(curr != null){
+            if(curr.left == null){
+                inorder.add(curr.val);
+                curr = curr.right;
+            }else{
+                TreeNode prev = curr.left;
+                while(prev.right != null && prev.right != curr){
+                    prev = prev.right;
+                }
+                if(prev.right == null){
+                    prev.right = curr;
+                    curr = curr.left;
+                }else{
+                    prev.right = null;
+                    inorder.add(curr.val);
+                    curr = curr.right;
+                }
+            }
         }
         
-        if(root.val <= min || root.val >= max){
-            return false;
+        for(int i = 1; i < inorder.size(); i++){
+            if(inorder.get(i) <= inorder.get(i - 1)){
+                return false;
+            }
         }
         
-        boolean left = findIsBST(root.left, min, root.val);
-        boolean right = findIsBST(root.right, root.val, max);
-        
-        return left && right;
+        return true;
     }
 }
