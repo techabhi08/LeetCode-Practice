@@ -1,25 +1,22 @@
 class Pair{
     int dest;
     int cost;
-    
     Pair(int dest, int cost){
         this.dest = dest;
         this.cost = cost;
     }
 }
 
-class Tuple {
-    int stops;
+class Tuple{
     int src;
-    int cost;
-    
-    Tuple(int stops, int src, int cost){
+    int price;
+    int stops;
+    Tuple(int stops, int src, int price){
         this.stops = stops;
         this.src = src;
-        this.cost = cost;
+        this.price = price;
     }
 }
-
 class Solution {
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
         List<List<Pair>> adj = new ArrayList<>();
@@ -41,23 +38,20 @@ class Solution {
             Tuple curr = queue.poll();
             int stops = curr.stops;
             int s = curr.src;
-            int c = curr.cost;
+            int price = curr.price;
             
             if(stops > k){
                 continue;
             }
             
             for(Pair item : adj.get(s)){
-                if(c + item.cost < dist[item.dest] && stops <= k){
-                    dist[item.dest] = c + item.cost;
+                if(price + item.cost < dist[item.dest] && stops <= k){
+                    dist[item.dest] = price + item.cost;
                     queue.add(new Tuple(stops + 1, item.dest, dist[item.dest]));
                 }
             }
         }
         
-        if(dist[dst] == (int)1e8){
-            return -1;
-        }
-        return dist[dst];
+        return dist[dst] == (int)1e8 ? -1 : dist[dst];
     }
 }
