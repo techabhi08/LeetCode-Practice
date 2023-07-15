@@ -6,11 +6,11 @@ class Solution {
             adj.add(new ArrayList<>());
         }
         
+        int[] indegree = new int[numCourses];
         for(int i = 0; i < prerequisites.length; i++){
             adj.get(prerequisites[i][1]).add(prerequisites[i][0]);
         }
         
-        int[] indegree = new int[numCourses];
         for(int i = 0; i < numCourses; i++){
             for(int item : adj.get(i)){
                 indegree[item]++;
@@ -37,10 +37,6 @@ class Solution {
                 }
             }
         }
-        
-        if(i == numCourses){
-            return topo;
-        }
-        return new int[]{};
+        return i == numCourses ? topo : new int[]{};
     }
 }
