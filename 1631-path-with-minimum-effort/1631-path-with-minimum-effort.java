@@ -2,7 +2,6 @@ class Pair{
     int row;
     int col;
     int dist;
-    
     Pair(int row, int col, int dist){
         this.row = row;
         this.col = col;
@@ -24,11 +23,11 @@ class Solution {
         pq.add(new Pair(0, 0, 0));
         ans[0][0] = 0;
         
-        int[][] dirs = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         
         while(!pq.isEmpty()){
             Pair curr = pq.poll();
-            int row = curr.row;
+            int row =  curr.row;
             int col = curr.col;
             int dist = curr.dist;
             
@@ -41,7 +40,7 @@ class Solution {
                 int nCol = col + dir[1];
                 
                 if(nRow >= 0 && nRow < n && nCol >= 0 && nCol < m){
-                    int effort = Math.max(dist, Math.abs(heights[row][col] - heights[nRow][nCol]));
+                    int effort = Math.max(dist, Math.abs(heights[nRow][nCol] - heights[row][col]));
                     if(effort < ans[nRow][nCol]){
                         ans[nRow][nCol] = effort;
                         pq.add(new Pair(nRow, nCol, effort));
