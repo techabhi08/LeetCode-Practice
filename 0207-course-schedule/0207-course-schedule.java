@@ -14,13 +14,14 @@ class Solution {
         int[] pathVis = new int[numCourses];
         
         for(int i = 0; i < numCourses; i++){
-            if(isCycle(i, vis, pathVis, adj)){
-                return false;
+            if(vis[i] == 0){
+                if(isCycle(i, vis, pathVis, adj)){
+                    return false;
+                }
             }
         }
         return true;
     }
-    
     public boolean isCycle(int node, int[] vis, int[] pathVis, List<List<Integer>> adj){
         vis[node] = 1;
         pathVis[node] = 1;
@@ -34,7 +35,6 @@ class Solution {
                 return true;
             }
         }
-        
         pathVis[node] = 0;
         return false;
     }
