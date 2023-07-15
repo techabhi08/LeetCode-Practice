@@ -1,41 +1,40 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int n = graph.length;
-        int[] vis = new int[n];
-        int[] pathVis = new int[n];
-        int[] count = new int[n];
+        List<List<Integer>> adj = new ArrayList<>();
         
         for(int i = 0; i < n; i++){
-            if(vis[i] == 0){
-                dfs(i, vis, pathVis, count, graph);
+            adj.add(new ArrayList<>());
+        }
+        
+        int[] indegree = new int[n];
+        for(int i = 0; i < n; i++){
+            for(int item : graph[i]){
+                adj.get(item).add(i);
+                indegree[i]++;
+            }
+        }
+        
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < n; i++){
+            if(indegree[i] == 0){
+                queue.add(i);
             }
         }
         
         List<Integer> ans = new ArrayList<>();
-        for(int i = 0; i < n; i++){
-            if(count[i] == 1){
-                ans.add(i);
-            }
-        }
-        return ans;
-    }
-    
-    public boolean dfs(int node, int[] vis, int[] pathVis, int[] count, int[][] graph){
-        vis[node] = 1;
-        pathVis[node] = 1;
-        
-        for(int item : graph[node]){
-            if(vis[item] == 0){
-                if(dfs(item, vis, pathVis, count, graph)){
-                    return true;
+        while(!queue.isEmpty()){
+            int curr = queue.poll();
+            ans.add(curr);
+            
+            for(int item : adj.get(curr)){
+                indegree[item]--;
+                if(indegree[item] == 0){
+                    queue.add(item);
                 }
-            }else if(pathVis[item] == 1){
-                return true;
             }
         }
-        
-        pathVis[node] = 0;
-        count[node] = 1;
-        return false;
+        ans.sort(null);
+        return ans;
     }
 }
