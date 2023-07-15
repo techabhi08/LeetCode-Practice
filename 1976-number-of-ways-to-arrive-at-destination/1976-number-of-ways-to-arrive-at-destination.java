@@ -1,7 +1,6 @@
 class Pair{
     int node;
     int dist;
-    
     Pair(int node, int dist){
         this.node = node;
         this.dist = dist;
@@ -33,24 +32,22 @@ class Solution {
         while(!pq.isEmpty()){
             Pair curr = pq.poll();
             int node = curr.node;
-            int cost = curr.dist;
+            int d = curr.dist;
             
             for(Pair item : adj.get(node)){
+                int adjDist = item.dist;
                 int adjNode = item.node;
-                int adjCost = item.dist;
                 
-                if(adjCost + cost < dist[adjNode]){
-                    dist[adjNode] = adjCost + cost;
-                    pq.add(new Pair(adjNode, dist[adjNode]));
+                if(adjDist + d < dist[adjNode]){
+                    dist[adjNode] = adjDist + d;
                     ways[adjNode] = ways[node];
-                }
-                else if(adjCost + cost == dist[adjNode]){
+                    pq.add(new Pair(adjNode, dist[adjNode]));
+                }else if(adjDist + d == dist[adjNode]){
                     ways[adjNode] += ways[node];
                     ways[adjNode] %= (int)1e9 + 7;
                 }
             }
         }
-        
         return (int)ways[n - 1];
     }
 }
