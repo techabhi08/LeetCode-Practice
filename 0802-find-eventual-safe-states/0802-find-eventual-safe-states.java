@@ -1,41 +1,40 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int n = graph.length;
-        List<Integer> ans = new ArrayList<>();
         int[] vis = new int[n];
-        int[] dfsVis = new int[n];
+        int[] pathVis = new int[n];
         int[] count = new int[n];
         
         for(int i = 0; i < n; i++){
             if(vis[i] == 0){
-                dfs(i, -1, graph, vis, dfsVis, count);
+                dfs(i, vis, pathVis, count, graph);
             }
         }
         
+        List<Integer> ans = new ArrayList<>();
         for(int i = 0; i < n; i++){
             if(count[i] == 1){
                 ans.add(i);
             }
         }
-        ans.sort(null);
         return ans;
     }
     
-    public boolean dfs(int node, int parent, int[][] graph, int[] vis, int[] dfsVis, int[] count){
+    public boolean dfs(int node, int[] vis, int[] pathVis, int[] count, int[][] graph){
         vis[node] = 1;
-        dfsVis[node] = 1;
+        pathVis[node] = 1;
         
         for(int item : graph[node]){
             if(vis[item] == 0){
-                if(dfs(item, node, graph, vis, dfsVis, count)){
+                if(dfs(item, vis, pathVis, count, graph)){
                     return true;
                 }
-            }else if(dfsVis[item] == 1){
+            }else if(pathVis[item] == 1){
                 return true;
             }
         }
         
-        dfsVis[node] = 0;
+        pathVis[node] = 0;
         count[node] = 1;
         return false;
     }
