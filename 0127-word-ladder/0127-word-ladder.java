@@ -7,18 +7,19 @@ class Pair{
         this.steps = steps;
     }
 }
+
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> words = new HashSet<>();
+        Set<String> set = new HashSet<>();
         for(String word : wordList){
-            words.add(word);
+            set.add(word);
         }
         
         Queue<Pair> queue = new LinkedList<>();
         queue.add(new Pair(beginWord, 1));
         
-        if(words.contains(beginWord)){
-            words.remove(beginWord);
+        if(set.contains(beginWord)){
+            set.remove(beginWord);
         }
         
         while(!queue.isEmpty()){
@@ -31,19 +32,18 @@ class Solution {
             }
             
             for(int i = 0; i < word.length(); i++){
-                for(char c = 'a'; c <= 'z'; c++){
+                for(char ch = 'a'; ch <= 'z'; ch++){
                     char[] wordToReplace = word.toCharArray();
-                    wordToReplace[i] = c;
+                    wordToReplace[i] = ch;
                     String newWord = new String(wordToReplace);
                     
-                    if(words.contains(newWord)){
-                        words.remove(newWord);
+                    if(set.contains(newWord)){
                         queue.add(new Pair(newWord, steps + 1));
+                        set.remove(newWord);
                     }
                 }
             }
         }
-        
         return 0;
     }
 }
