@@ -11,28 +11,26 @@ class Solution {
             return 0;
         }
         
-        int[][] dp = new int[n][s2 + 1];
-        if(nums[0] == 0){
-            dp[0][0] = 2;
-        }else{
-            dp[0][0] = 1;
-        }
-        
-        if(nums[0] != 0 && nums[0] <= s2){
-            dp[0][nums[0]] = 1;
-        }
-        
-        for(int index = 1; index < n; index++){
-            for(int sum = 0; sum <= s2; sum++){
-                int notTake = dp[index - 1][sum];
-                int take = 0;
-                if(nums[index] <= sum){
-                    take = dp[index - 1][sum - nums[index]];
-                }
-
-                dp[index][sum] = take + notTake;
+        return findMin(n - 1, s2, nums);
+    }
+    
+    public int findMin(int index, int target, int[] nums){
+        if(index == 0){
+            if(target == 0 && nums[index] == 0){
+                return 2;
             }
+            if(target == 0 || nums[index] == target){
+                return 1;
+            }
+            return 0;
         }
-        return dp[n - 1][s2];
+        
+        int notTake = findMin(index - 1, target, nums);
+        int take = 0;
+        if(nums[index] <= target){
+            take = findMin(index - 1, target - nums[index], nums);
+        }
+        
+        return take + notTake;
     }
 }
