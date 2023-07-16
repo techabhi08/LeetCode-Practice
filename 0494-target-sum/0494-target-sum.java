@@ -10,11 +10,14 @@ class Solution {
         if(total - target < 0 || (total - target) % 2 != 0){
             return 0;
         }
-        
-        return findMin(n - 1, s2, nums);
+        int[][] dp = new int[n][s2 + 1];
+        for(int[] row : dp){
+            Arrays.fill(row, -1);
+        }
+        return findMin(n - 1, s2, nums, dp);
     }
     
-    public int findMin(int index, int target, int[] nums){
+    public int findMin(int index, int target, int[] nums, int[][] dp){
         if(index == 0){
             if(target == 0 && nums[index] == 0){
                 return 2;
@@ -25,12 +28,16 @@ class Solution {
             return 0;
         }
         
-        int notTake = findMin(index - 1, target, nums);
-        int take = 0;
-        if(nums[index] <= target){
-            take = findMin(index - 1, target - nums[index], nums);
+        if(dp[index][target] != -1){
+            return dp[index][target];
         }
         
-        return take + notTake;
+        int notTake = findMin(index - 1, target, nums, dp);
+        int take = 0;
+        if(nums[index] <= target){
+            take = findMin(index - 1, target - nums[index], nums, dp);
+        }
+        
+        return dp[index][target] = take + notTake;
     }
 }
