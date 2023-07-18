@@ -1,13 +1,13 @@
 class Node{
     Node prev;
     Node next;
-    int key, val;
-    
+    int val, key;
     Node(int key, int val){
         this.key = key;
         this.val = val;
     }
 }
+
 class LRUCache {
     Map<Integer, Node> map = new HashMap<>();
     Node head = new Node(0, 0);
@@ -22,10 +22,10 @@ class LRUCache {
     
     public int get(int key) {
         if(map.containsKey(key)){
-            Node node = map.get(key);
-            remove(node);
-            insert(node);
-            return node.val;
+            Node curr = map.get(key);
+            remove(curr);
+            insert(curr);
+            return curr.val;
         }
         return -1;
     }
@@ -35,7 +35,7 @@ class LRUCache {
         if(map.containsKey(key)){
             remove(map.get(key));
         }
-        if(map.size() == capacity){
+        if(capacity == map.size()){
             remove(tail.prev);
         }
         insert(node);
@@ -44,15 +44,15 @@ class LRUCache {
     public void insert(Node node){
         map.put(node.key, node);
         node.next = head.next;
-        head.next = node;
-        node.next.prev = node;
         node.prev = head;
+        head.next.prev = node;
+        head.next = node;
     }
     
     public void remove(Node node){
         map.remove(node.key);
-        node.prev.next = node.next;
         node.next.prev = node.prev;
+        node.prev.next = node.next;
     }
 }
 
