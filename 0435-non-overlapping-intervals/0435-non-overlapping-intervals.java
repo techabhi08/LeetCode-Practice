@@ -5,13 +5,12 @@ class Solution {
         int count = 0;
         for(int i = 1; i < intervals.length; i++){
             if(intervals[i][0] < prev){
-                prev = Math.min(intervals[i][1], prev);
+                prev = Math.min(prev, intervals[i][1]);
                 count++;
             }else{
                 prev = intervals[i][1];
             }
         }
-        
         return count;
     }
 }
