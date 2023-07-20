@@ -19,9 +19,9 @@ class Solution {
         }
         
         int[] ans = new int[stack.size()];
-        int i = ans.length - 1;
+        int index = ans.length - 1;
         while(!stack.isEmpty()){
-            ans[i--] = stack.pop();
+            ans[index--] = stack.pop();
         }
         return ans;
     }
