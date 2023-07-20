@@ -1,19 +1,23 @@
 class Solution {
     public List<List<Integer>> combinationSum3(int k, int n) {
-        List<List<Integer>> ans = new ArrayList<>();
-        findSum(1, k, n, new ArrayList<>(), ans);
-        return ans;
+        List<List<Integer>> list = new ArrayList<>();
+        
+        findAns(1, k, n, list, new ArrayList<>());
+        return list;
     }
     
-    public void findSum(int start, int k, int n, List<Integer> inner, List<List<Integer>> ans){
-        if(inner.size() == k && n == 0){
+    public void findAns(int index, int k, int target, List<List<Integer>> ans, List<Integer> inner){
+        if(inner.size() == k && target == 0){
             ans.add(new ArrayList<>(inner));
             return;
         }
         
-        for(int i = start; i <= 9; i++){
+        for(int i = index; i <= 9; i++){
+            if(i > target){
+                break;
+            }
             inner.add(i);
-            findSum(i + 1, k, n - i, inner, ans);
+            findAns(i + 1, k, target - i, ans, inner);
             inner.remove(inner.size() - 1);
         }
     }
