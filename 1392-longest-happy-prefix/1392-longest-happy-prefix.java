@@ -13,15 +13,15 @@ class Solution {
                 lps[i] = len;
                 i++;
             }else{
-                if(len != 0){
-                    len = lps[len - 1];
-                }else{
+                if(len == 0){
                     lps[i] = 0;
                     i++;
+                }else{
+                    len = lps[len - 1];
                 }
             }
         }
         
-        return s.substring(0, lps[s.length() - 1]);
+        return s.substring(0, lps[lps.length - 1]);
     }
 }
