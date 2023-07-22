@@ -17,19 +17,31 @@ class Solution {
     public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
         List<Integer> list = new ArrayList<>();
         
-        preorder(root1, list);
-        preorder(root2, list);
+        Stack<TreeNode> stack1 = new Stack<>();
+        Stack<TreeNode> stack2 = new Stack<>();
         
-        list.sort(null);
-        return list;
-    }
-    
-    public void preorder(TreeNode root, List<Integer> list){
-        if(root == null){
-            return;
+        while(root1 != null || root2 != null || !stack1.isEmpty() || !stack2.isEmpty()){
+            while(root1 != null){
+                stack1.add(root1);
+                root1 = root1.left;
+            }
+            
+            while(root2 != null){
+                stack2.add(root2);
+                root2 = root2.left;
+            }
+            
+            if(stack2.isEmpty() || (!stack1.isEmpty() && stack1.peek().val <= stack2.peek().val)){
+                root1 = stack1.pop();
+                list.add(root1.val);
+                root1 = root1.right;
+            }else{
+                root2 = stack2.pop();
+                list.add(root2.val);
+                root2 = root2.right;
+            }
         }
-        list.add(root.val);
-        preorder(root.left, list);
-        preorder(root.right, list);
+        
+        return list;
     }
 }
