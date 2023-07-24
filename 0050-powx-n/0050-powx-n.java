@@ -6,7 +6,7 @@ class Solution {
         
         if(n == Integer.MIN_VALUE){
             x = x * x;
-            n = n / 2;
+            n /= 2;
         }
         
         if(n < 0){
