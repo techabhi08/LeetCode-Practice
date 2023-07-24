@@ -26,19 +26,19 @@ class Solution {
             return false;
         }
         
-        boolean isLeft = isBalanced(root.left);
-        boolean isRight = isBalanced(root.right);
+        boolean leftB = isBalanced(root.left);
+        boolean rightB = isBalanced(root.right);
         
-        return isLeft && isRight;
+        return leftB && rightB;
     }
     
-    public int findHeight(TreeNode node){
-        if(node == null){
+    public int findHeight(TreeNode root){
+        if(root == null){
             return 0;
         }
         
-        int left = findHeight(node.left);
-        int right = findHeight(node.right);
+        int left = findHeight(root.left);
+        int right = findHeight(root.right);
         
         return 1 + Math.max(left, right);
     }
