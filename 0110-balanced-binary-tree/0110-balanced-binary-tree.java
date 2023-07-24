@@ -19,17 +19,11 @@ class Solution {
             return true;
         }
         
-        int left = findHeight(root.left);
-        int right = findHeight(root.right);
-        
-        if(Math.abs(left - right) > 1){
+        if(findHeight(root) == -1){
             return false;
         }
         
-        boolean leftB = isBalanced(root.left);
-        boolean rightB = isBalanced(root.right);
-        
-        return leftB && rightB;
+        return true;
     }
     
     public int findHeight(TreeNode root){
@@ -39,6 +33,14 @@ class Solution {
         
         int left = findHeight(root.left);
         int right = findHeight(root.right);
+        
+        if(left == -1 || right == -1){
+            return -1;
+        }
+        
+        if(Math.abs(left - right) > 1){
+            return -1;
+        }
         
         return 1 + Math.max(left, right);
     }
