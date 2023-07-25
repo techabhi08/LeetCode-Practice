@@ -7,9 +7,9 @@ class Solution {
             if(i > 0 && nums[i] == nums[i - 1]){
                 continue;
             }
+            int target = -nums[i];
             int j = i + 1;
             int k = nums.length - 1;
-            int target = -nums[i];
             
             while(j < k){
                 if(nums[j] + nums[k] == target){
@@ -20,7 +20,6 @@ class Solution {
                     while(j < k && nums[j] == nums[j - 1]){
                         j++;
                     }
-                    
                     while(j < k && nums[k] == nums[k + 1]){
                         k--;
                     }
