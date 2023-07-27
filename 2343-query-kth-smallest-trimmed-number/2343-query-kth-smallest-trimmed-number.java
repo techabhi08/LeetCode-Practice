@@ -7,10 +7,9 @@ class Node{
         this.val = val;
     }
 }
-
 class Solution {
     public int[] smallestTrimmedNumbers(String[] nums, int[][] queries) {
-        HashMap<Integer, Node[]> map = new HashMap<>();
+        Map<Integer, Node[]> map = new HashMap<>();
         int[] res = new int[queries.length];
         int index = 0;
         int len = nums[0].length();
@@ -27,7 +26,6 @@ class Solution {
             }
             res[index++] = map.get(query[1])[query[0] - 1].index;
         }
-        
         return res;
     }
 }
