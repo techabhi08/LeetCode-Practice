@@ -6,7 +6,7 @@ class Solution {
         int right = 0;
         
         for(int i = 0; i < nums.length; i++){
-            if(temp[i] != nums[i]){
+            if(nums[i] != temp[i]){
                 left = Math.min(left, i);
                 right = Math.max(right, i);
             }
