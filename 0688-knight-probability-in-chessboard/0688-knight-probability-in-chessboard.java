@@ -1,10 +1,10 @@
 class Solution {
     public double knightProbability(int n, int k, int row, int column) {
         Map<String, Double> dp = new HashMap<>();
-        return (double)findKnight(n, k, row, column, dp) / Math.pow(8, k);
+        return (double)solve(n, k, row, column, dp) / Math.pow(8, k);
     }
     
-    public double findKnight(int n, int k, int row, int col, Map<String, Double> dp){
+    public double solve(int n, int k, int row, int col, Map<String, Double> dp){
         if(row < 0 || row >= n || col < 0 || col >= n){
             return 0;
         }
@@ -18,17 +18,18 @@ class Solution {
             return 1;
         }
         
-        double a0 = findKnight(n, k - 1, row + 1, col + 2, dp);
-        double a1 = findKnight(n, k - 1, row + 2, col + 1, dp);
-        double a2 = findKnight(n, k - 1, row + 2, col - 1, dp);
-        double a3 = findKnight(n, k - 1, row + 1, col - 2, dp);
-        double a4 = findKnight(n, k - 1, row - 1, col - 2, dp);
-        double a5 = findKnight(n, k - 1, row - 2, col - 1, dp);
-        double a6 = findKnight(n, k - 1, row - 2, col + 1, dp);
-        double a7 = findKnight(n, k - 1, row - 1, col + 2, dp);
+        double a1 = solve(n, k - 1, row - 2, col - 1, dp);
+        double a2 = solve(n, k - 1, row - 1, col - 2, dp);
+        double a3 = solve(n, k - 1, row + 1, col - 2, dp);
+        double a4 = solve(n, k - 1, row + 2, col - 1, dp);
         
-        double result = a0 + a1 + a2 + a3 + a4 + a5 + a6 + a7;
-        dp.put(key, result);
-        return result;
+        double a5 = solve(n, k - 1, row + 2, col + 1, dp);
+        double a6 = solve(n, k - 1, row + 1, col + 2, dp);
+        double a7 = solve(n, k - 1, row - 1, col + 2, dp);
+        double a8 = solve(n, k - 1, row - 2, col + 1, dp);
+        
+        double res = a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8;
+        dp.put(key, res);
+        return res;
     }
 }
