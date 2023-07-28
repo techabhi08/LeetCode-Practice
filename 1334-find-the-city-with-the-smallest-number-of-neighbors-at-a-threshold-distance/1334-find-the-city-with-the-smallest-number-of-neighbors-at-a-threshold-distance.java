@@ -1,14 +1,15 @@
 class Pair{
     int node;
-    int dist;
-    Pair(int node, int dist){
+    int weight;
+    Pair(int node, int weight){
         this.node = node;
-        this.dist = dist;
+        this.weight = weight;
     }
 }
 class Solution {
     public int findTheCity(int n, int[][] edges, int distanceThreshold) {
         List<List<Pair>> adj = new ArrayList<>();
+        
         for(int i = 0; i < n; i++){
             adj.add(new ArrayList<>());
         }
@@ -23,21 +24,20 @@ class Solution {
             Arrays.fill(row, (int)1e9);
         }
         
-        
         for(int src = 0; src < n; src++){
-            PriorityQueue<Pair> pq = new PriorityQueue<>((x, y) -> x.dist - y.dist);
+            PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.weight - b.weight);
             pq.add(new Pair(src, 0));
             
             while(!pq.isEmpty()){
                 Pair curr = pq.poll();
-                int val = curr.node;
-                int weight = curr.dist;
+                int node = curr.node;
+                int d = curr.weight;
                 
-                for(Pair item : adj.get(val)){
+                for(Pair item : adj.get(node)){
                     int adjNode = item.node;
-                    int adjDist = item.dist;
-                    if(adjDist + weight < dist[src][adjNode]){
-                        dist[src][adjNode] = adjDist + weight;
+                    int adjDist = item.weight;
+                    if(adjDist + d < dist[src][adjNode]){
+                        dist[src][adjNode] = adjDist + d;
                         pq.add(new Pair(adjNode, dist[src][adjNode]));
                     }
                 }
@@ -46,13 +46,14 @@ class Solution {
         
         int ans = -1;
         int minCount = Integer.MAX_VALUE;
+        
         for(int i = 0; i < n; i++){
             int count = 0;
             for(int j = 0; j < n; j++){
                 if(i == j){
                     continue;
                 }
-                else if(dist[i][j] <= distanceThreshold){
+                if(dist[i][j] <= distanceThreshold){
                     count++;
                 }
             }
