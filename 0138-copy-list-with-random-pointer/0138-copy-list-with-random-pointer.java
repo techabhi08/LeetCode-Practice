@@ -18,8 +18,6 @@ class Solution {
         if(head == null){
             return head;
         }
-        
-        //Creating the duplicate nodes in the same list
         Node temp = head;
         while(temp != null){
             Node node = new Node(temp.val);
